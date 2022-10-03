@@ -9,12 +9,14 @@
 # Date:   Fall 2022
 #--------------------------------------------------------------
 
+# Ask the user for a date, specifying the format
+user_date = input("Enter a date (M/D/YYYY):")
+
 #Create a variable point to the data file
 file_name = 'data/raw/Sara.txt'
 
 #Create a file object from the filename
 file_object = open(file=file_name,mode='r')
-
 
 #Read contents of file into a list
 line_list = file_object.readlines()
@@ -43,13 +45,22 @@ for lineString in line_list:
     obs_lat = lineData[6]
     obs_lon = lineData[7]
     
-    
-    
     #Add items to dictionaries, if lc criteria is met
     if obs_lc in ("1","2","3"):
         date_dict[record_id] = obs_date
         location_dict[record_id] = (obs_lat, obs_lon)
+
+#Create an empty key list
+matching_keys = []
     
-    #Print information to the user
-    #print(f'Record {record_id} indicates Sara was seet and {obs_lat}N, {obs_lon}W  on {obs_date}. ')
-  
+# Loop through all key, value pairs in the date_dictionary
+for the_key, the_value in date_dict.items():
+    #See if the date (the value) matches the user date
+    if the_value == user_date:
+        #Add matching keys to list
+        matching_keys.append(the_key)
+
+#Reveal locations for each key in matching_keys
+for matching_key in matching_keys:
+    obs_lat, obs_lon = location_dict[matching_key]
+    print(f"Record {matching_key} indicates Sara was seen at lat:{obs_lat},lon:{obs_lon} on {user_date}")
